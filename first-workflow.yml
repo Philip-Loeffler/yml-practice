@@ -2,7 +2,6 @@ name: first workflow name
 on: [push]
 jobs: 
   run-shell-commands: 
-    runs-on: macos-latest
     steps:
       - name: echo a string
         run: echo "hello world"
