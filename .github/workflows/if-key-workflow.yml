@@ -13,4 +13,4 @@ jobs:
           echo ${{ 1 }}
       - name: Dump context
         run: |
-          echo ${{ toJson(job)}}
+          echo ${{ toJson(Steps)}}
