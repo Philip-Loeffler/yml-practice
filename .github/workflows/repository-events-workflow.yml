@@ -1,0 +1,28 @@
+name: Repository Events
+on:
+  push:
+    # only work on certain branches
+    branches:
+      - main
+      # any branch that matches this pattern feature/featA. will not work on feature/featA/featurB.
+      - "feature/*"
+    # you cant use branches and branches ignore in the same workflow like this
+    # branches-ignore:
+    #   - develop
+    tags:
+      - v1.*
+    paths:
+      - "**.js"
+      - "!app.js"
+  pull_request:
+    types: [opened]
+  issues:
+    types: [opened]
+jobs:
+  checkout-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $GITHUB_SHA
+          echo $GITHUB_REF
+      - uses: actions/checkout@v3
