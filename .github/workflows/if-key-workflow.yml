@@ -1,0 +1,16 @@
+name: expression and contexts
+on: [push, pull_request, issues, workflow_dispatch]
+run-name: "Expressions & contexts by @${{ github.actor }}, event: ${{ github.event_name}}"
+jobs:
+  using-expressions-and-contexts:
+    runs-on: ubuntu-latest
+    # this is saying, we are only going to run this job, if the expression is equ
+    if: github.event_name == 'push'
+    steps:
+      - name: Expression
+        id: expression
+        run: |
+          echo ${{ 1 }}
+      - name: Dump context
+        run: |
+          echo ${{ toJson(job)}}
