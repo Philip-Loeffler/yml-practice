@@ -1,25 +1,25 @@
-name: First Workflow
-on: [push]
-jobs:
-  run-shell-commands:
-    runs-on: ubuntu-latest
-    steps:
-      - name: echo a string
-        run: echo "hello world"
-      - name: multiline command
-        run: |
-          node -v
-          npm -v
-  parallel-jobs-macos:
-    runs-on: macos-latest
-    steps:
-      - name: View SW version
-        run: sw_vers
-  dependant-job:
-    runs-on: windows-latest
-    needs: run-shell-commands
-    steps:
-      - name: echo a string
-        run: write-output "Windows String"
-      - name: Error Step
-        run: doesnotexits
+# name: First Workflow
+# on: [push]
+# jobs:
+#   run-shell-commands:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: echo a string
+#         run: echo "hello world"
+#       - name: multiline command
+#         run: |
+#           node -v
+#           npm -v
+#   parallel-jobs-macos:
+#     runs-on: macos-latest
+#     steps:
+#       - name: View SW version
+#         run: sw_vers
+#   dependant-job:
+#     runs-on: windows-latest
+#     needs: run-shell-commands
+#     steps:
+#       - name: echo a string
+#         run: write-output "Windows String"
+#       - name: Error Step
+#         run: doesnotexits
