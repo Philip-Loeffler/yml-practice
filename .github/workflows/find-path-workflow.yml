@@ -1,5 +1,5 @@
 name: finding path
-on: [push]
+on: [issues]
 jobs:
   example_job:
     runs-on: ubuntu-latest
@@ -7,4 +7,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: Print working directory
         run: pwd
-        working-directory: path/to/your/directory
+    # this is failing
+    # working-directory: path/to/your/directory
