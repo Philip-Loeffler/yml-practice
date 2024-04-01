@@ -1,6 +1,10 @@
-on: push
+name: expression and contexts
+on: [push, pull_request, issues, workflow_dispatch]
+run-name: "Expressions & contexts by @${{ github.actor }}, event: ${{ github.event_name}}"
 jobs:
-  first-job:
-    runs-on: macos-latest
+  example_job:
+    runs-on: ubuntu-latest
     steps:
-      - run: node --version
+      - uses: actions/checkout@v2
+      - name: Print working directory
+        run: pwd
