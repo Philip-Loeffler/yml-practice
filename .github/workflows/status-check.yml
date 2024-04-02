@@ -7,7 +7,15 @@ jobs:
     steps:
       - name: Step 1
         run: sleep 20
+        # this will cause a failure so the failure step will run
+      - name: Step 2
+        id: step-2
+        run: exit 1
       - name: Runs on Failure
+        #   behind the scenes, github applies success() to all if statements
+        #   so if statements look more like this success() && steps.step-2.conclussion == 'failure'
+        #   if steps.step-2.conclussion == 'failure'
+        #  so it override this you need to do Failure() && steps.step-2.conclussion == 'failure'
         if: Failure()
         run: echo 'Runs only on failure'
       - name: Runs of success
