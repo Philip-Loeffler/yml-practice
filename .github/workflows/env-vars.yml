@@ -1,0 +1,30 @@
+name: enviroment values
+on: [push]
+# testing env variables with/without context - the first run (echo $GITHUB_REF) is interpreted on the runner machine, because it is an env variable that lives on the runner machine when our file is sent
+#   run: echo '${{ github.ref } is going to be evaluated by github actions before sent of to the runner machine
+
+# you can define env variables on different level
+
+env:
+  WF_LEVEL_ENV: available to all jobs
+
+jobs:
+  env-vars-and-context:
+    runs-on: ubuntu-latest
+    # github actions processes this before sending to the runner machine
+    if: github.ref == 'refs/heads/main'
+    env:
+      JOB_LEVEL_ENV: available to all steps in env-vars-and-context-job
+    steps:
+      - name: log env var
+        run: echo $GITHUB_REF
+      - name: log context
+        run: echo '${{ github.ref }}'
+      - name: log custom env vars
+        env:
+          STEP_LEVEL_ENV: availabe to only this sstep
+          WF_LEVEL_ENV: overridden in step
+        run: |
+          echo '${{ env.STEP_LEVEL_ENV }}'
+          echo $STEP_LEVEL_ENV
+          echo $JOB_LEVEL_ENV
