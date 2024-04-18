@@ -1,0 +1,28 @@
+name: Variables and secrets
+on: [push]
+
+jobs:
+  log-vars:
+    # on the organization level, we can have a variable called job_runners which is equal to ubuntu latest
+  # runs-on: ${{ vars.JOBS_RUNNERS }}
+  runs-on: ubuntu-latest
+  env:
+    BOOLEAN_SECRET: ${{ secrets.BOOLEAN_SECRET }}
+    ENV_LEVEL_VAR: ${{ secrets.ENV_LEVEL_VAR }}
+    REPO_LEVEL_VAR: ${{ secrets.REPO_LEVEL_VAR }}
+  steps:
+    - name: Run only if BOOLEAN_SECRET is true
+      if: env.BOOLEAN_SECRET == 'true'
+      run: echo "i ran"
+    - name: log vars
+      run: |
+        echo '${{ vars.JOB_RUNNER }}'
+        echo "REPO_LEVEL_VAR: $REPO_LEVEL_VAR"
+
+# define variables in enviroemnts in settings in github
+# secrets are encrypted, env variables are not
+# you can also set secrets and variables at the organization level if your repo lives in an organization repo
+# enviroment secrets will over ride repo secrets and a repo secret will override an organization secret
+#
+#
+#
