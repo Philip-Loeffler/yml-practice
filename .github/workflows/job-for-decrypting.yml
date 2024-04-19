@@ -1,0 +1,20 @@
+name: job for decrypting
+# on: [push]
+
+jobs:
+  decrypt-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Decrypt File
+        env:
+          PASSPHRASE: ${{ secrets.PASSPHRASE}}
+        run: |
+          mkdir $HOME/secrets
+          gpg --quiet --batch --yes --decrpyt --passphrase="$PASSPHRASE" --output $HOME/secrets/secret/json secret.json.gpg
+      - name: view encrypted file content
+        run: cat $HOME/secrets/secret.json
+
+        # you would never do this in a real life situation
+        #  in the demo, there is a json.secret folder that contains 2 keys. that is crypted using gpg. then here we are creating a new
+        # folder in home secrets and running our gpg command to decrypt it using a passphrase that we stored in our github
