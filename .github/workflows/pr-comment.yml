@@ -1,0 +1,28 @@
+name: Pull Request Comment
+on:
+  pull_request_target:
+    types: [opened]
+
+# you can customize permissions, if you do it here, it will be on all jobs, but you can also do it within a job so its scoped to that job
+jobs:
+  pr-comment:
+    runs-on: ubuntu-latest
+    # this means our github token is only going to have write issues
+    permissions:
+      pull-requests: write
+    steps:
+      - name: comment on new pr
+        # behind the scenes this is using github secret for authentication
+
+        uses: actions/github-script@v6
+        with:
+          #you can override the uses with own token with your own
+          github-token: ${{ secrets.GITHUB_TOKEN}}
+
+          script: |
+            guthub.rest.issues.createComment({
+            owner.context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: 'thanks for contributing!'
+            })'
