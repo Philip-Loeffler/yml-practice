@@ -1,0 +1,34 @@
+name: stauts check functionss
+on: [push]
+
+jobs:
+  jon-1:
+    runs-on: ubuntu-latest
+    # timeout-minutes: 1
+    # if we run this on the job level the the job will be cancelled in this case, and in this case, the if statement for cancelled will run
+    steps:
+      # this step is going to take more then one minute, so it will fail because timeout is set to one minute. so then any subsequent step that
+      # has an if on failure, will run
+      - name: Step 1
+        run: sleep 90
+        timeout-minutes: 1
+      - name: Step 2
+        id: step-2
+        # adding a key here
+        # if step two failed, this wont let the entire job to fail
+
+        continue-on-error: true
+        run: exit 1
+
+      - name: runs on step 2 failure
+        if: failure() && steps.step-2.conclusion == 'failure'
+        run: echo 'Step 2 has failed
+      - name: runs on failure
+        if: failure()
+        run: echo 'failure'
+      - name: Runs on success
+        if: success()
+        run: echo 'runs on success'
+      - name: runs when cancelled
+        if: cancelled()
+        run: echo 'runs on cancelled'
