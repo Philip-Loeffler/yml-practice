@@ -1,0 +1,20 @@
+name: Concurrency 2
+run-name: Concurrenty 2 (${{ inputs.enviroment }})
+on:
+  workflow_dispatch:
+    inputs:
+      enviroment:
+        description: "Enviroment"
+        type: environment
+        required: true
+
+# two workflows cannot share the same concurrency group. if they do, they will cancel each other out.
+# so avoid this you can give the group a unique name
+concurrency:
+  group: ${{github.workflow }} - ${{ github.event.inputs.enviroment }}
+  cancel-in-progress: true
+jobs:
+  sleep:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 30

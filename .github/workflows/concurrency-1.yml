@@ -1,0 +1,28 @@
+name: Concurrency 1
+run-name: Concurrenty 1 (${{ inputs.enviroment }})
+on:
+  workflow_dispatch:
+    inputs:
+      enviroment:
+        description: "Enviroment"
+        type: environment
+        required: true
+
+# concurrency:
+# group: concurrency-1
+# cancel-in-progess: true
+# if we do this with a key of group, this will cancel and job in progress and start the latest job directly
+# concurrency:
+# # if a workflow is triggered multiple times, within the same concurrency group, it will be guaranteed that it will only run once at a time
+# so you will not have two jobs running in parrel. This means that if you run this workflow multiple times manually, the latest ones will
+# be pending, until the job in progress is finished
+#
+# this will now be dynamic by which enviorment we choose
+# concurrency:
+# group: ${{ github.event.inputs.enviroment }}
+concurrency: concurrency-1
+jobs:
+  sleep:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 30

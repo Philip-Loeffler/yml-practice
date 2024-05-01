@@ -1,0 +1,29 @@
+name: matrix
+# doing this so its not triggered for now
+on:
+  release:
+    types: [created]
+
+jobs:
+  # by having this, our job is going to run for each value in the node-verion array
+  node-matrix:
+    # setting this will make it so if any of our jobs fail it will continue.
+    continue-on-error: true
+    strategy:
+      matrix:
+        # this now makes it a two dimensional matrix, so each version is going to run on the different os
+        os: [ubuntu-latest, windows-latest]
+        node-version: [14, 15, 16]
+        # fail-fast, if any jobs in our matrix fail, the other jobs will continue, so pending jobs will continue
+        # parrel will make it so only 3 jobs will run at one time
+        # max-parrel: 3
+      runs-on: ${{ matrix.os }}
+    steps:
+      # doing this will tell us what version of node is being used on the runner machine
+      - run: node -v
+      # then here we are setting what version of node we want to use
+      - uses: actions/setup-node@v3
+        with:
+          # and we are able to use the matrix value by using this because of context
+          node-version: ${{ matrix.node-version }}
+      - run: node -v

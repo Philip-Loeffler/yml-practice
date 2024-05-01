@@ -1,0 +1,41 @@
+name: matrix
+# doing this so its not triggered for now
+on:
+  release:
+    types: [created]
+
+jobs:
+  node-matrix:
+    continue-on-error: true
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [14, 15, 16]
+        includes:
+          # by doing this its not going to add another 'job' for ubuntu-latest and the node version
+          # what it will do is see the first ubunt-latest node version and then add the key to the is-ubuntu true
+          # so it would look like
+          #  {os: ubunt-latest, node-version: 14, is-ubuntu: true}
+          - os: ubuntu-latest
+            is-ubuntu: true
+            # having this, will add a new item into the matrix
+          - os: mac-latest
+            node-version: 15
+            # will not override any combinations, just added to the combinationss
+          - experimental: false
+      runs-on: ${{ matrix.os }}
+    steps:
+      - run: node -v
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: node -v
+
+      # the matrix
+      #  {os: ubuntu-latest, node-version: 14, is-ubuntu: true, experimentl}
+      #  {os: ubuntu-latest, node-version: 15, is-ubuntu: true}
+      #  {os: ubuntu-latest, node-version: 16, is-ubuntu: true}
+      #  {os: window-latest, node-version: 14}
+      #  {os: window-latest, node-version: 15}
+      #  {os: window-latest, node-version: 16}
+      #  {os: mac-latest, node-version: 15}
