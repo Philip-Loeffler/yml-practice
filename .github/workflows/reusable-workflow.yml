@@ -1,0 +1,33 @@
+name: reusable worflow
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: "input description"
+        type: string
+        default: "phil"
+        required: false
+    secrets:
+      access-token:
+        description: "secret description"
+        required: true
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls -a
+  log-context-and-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: display github context
+      - run: echo '${{ toJSON(github) }}'
+      - name: display name input
+        run: echo $ {{ inputs.name }}
+      - name: dispaly access-token secret
+        run: echo $ {{ sececrets.access-token }}
+
+        # decided not to make a second repo for this example. This file is related to 'using-reusable-workflow.yml'
+        # this file would be living in a second repo, and we could then use, 'using-reusable-workflow' to demonstrate how to use
+        # workflows that are not in the same repo
