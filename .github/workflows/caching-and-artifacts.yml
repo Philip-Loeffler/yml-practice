@@ -1,0 +1,32 @@
+name: caching and artifacts
+on: [workflow_dispatch]
+jobs:
+  use-axios:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache node modules
+        id: cache-dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          # cache is going to be saved with this key, and when you use actions/cache, its going to to look for the npm-cache key in your github to use
+          key: "npm-cache"
+      - name: display cache output
+        run: echo '${{ toJSON(steps.cache-dependencies.outputs }}
+      - name: Install depndency
+        run: npm install
+      - name: use Axios
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const axios = require('axios');
+            const res = await axios('https://icanhazdadjoke.com/', { headers: {
+            Accept: 'text/plain' } })
+            console.log(res.data)
+
+# if we use npm on github actions, since everytime we run a workflow, we use a new virtual runner machine instance. So our dependencies
+# will not be cached. So we install axios and then use js to ask for a silly joke request. when this action runs, each time its going to
+# check npm and install all dependencies. So we can use the actions/check@v3. this will take the cache after its installed, and save it to
+# a key in github. then when this action runs, its going to check the 'npm-cache' key, and apply it to this workflow, so it doesn't need
+# to keep installing dependencys.

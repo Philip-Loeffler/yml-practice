@@ -1,0 +1,30 @@
+name: Reusable workflow 2
+on:
+  workflow_call:
+    outputs:
+      date:
+        desciption: "date value"
+        value: ${{ jobs.generate-ouput.outputs.date }}
+jobs:
+  generate-output:
+    runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.date-step.outputs.date }}
+      # here we have a step that generates a job output, creating an output that is mapped to the output that the step is going to generate
+
+    steps:
+      - run: echo "date=$(date)" >> $GITHUB_OUTPUT"
+        id: date-step
+
+  # so to use this in a different file, in that file you would put
+  # jobs:
+  #
+  #
+  # calling-a-reusable-work-flow-in-the-same-repo
+  #   uses: ./.github/workflows/reusable-workflow-2.yml
+  # using-reusable-wf-output:
+  # runs-on:
+  # ubuntu-latest
+  # needs: calling-a-reusuable-wf-in-the-same-repo
+  # steps:
+  # - run: echo ${{ needs.calling-a-reusable-wf-in-the-same-repo.outputs.date}}
