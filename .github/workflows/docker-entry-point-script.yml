@@ -45,5 +45,10 @@ jobs:
       - name: Run a bash script
         uses: docker://node:18.16-alpine3.17
         with:
+          # path to our script
+          #  to make this work, you have to set this file to an executable command. So in your terminal you would write 'chmod +x script.sh'
+          #
           entrypoint: ./script.sh
+          # some is considered the first argument. so in the script file, if you have echo "$1" its only going to echo 'some'
+
           args: "Some string"
