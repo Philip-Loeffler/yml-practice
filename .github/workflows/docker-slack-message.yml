@@ -1,0 +1,61 @@
+name: Docker
+on: [workflow_dispatch]
+
+jobs:
+  docker-job:
+    runs-on: ubuntu-latest
+    container:
+      image: node:20.3-alpine3.17
+      # credentials:
+      #   username:
+      #   password:
+      env:
+        API_URL: some-url.com
+      ports:
+        - 80
+      # volumes:
+      #   - vol_name:/path/in/container
+      #   - /path/to/container
+      #   - /path/in/host:/path/in/container
+      # options: --cpus 1
+    steps:
+      - name: Log Node & OS Versions
+        run: |
+          node -v
+          cat /etc/os-release
+      - name: Log Env
+        run: echo $API_URL
+      - name: Create a file
+        run: echo 'Some text' > text.txt
+      - name: Container in a Step
+        uses: docker://node:18.16-alpine3.17
+        with:
+          entrypoint: /usr/local/bin/node
+          args: -p 2+3
+      - name: Log node version
+        uses: docker://node:18.16-alpine3.17
+        with:
+          args: -v
+      - name: Show file contents
+        uses: docker://node:18.16-alpine3.17
+        with:
+          entrypoint: cat
+          args: text.txt
+      - uses: actions/checkout@v3
+      - name: Run a bash script
+        uses: docker://node:18.16-alpine3.17
+        with:
+          # path to our script
+          #  to make this work, you have to set this file to an executable command. So in your terminal you would write 'chmod +x script.sh'
+          #
+          entrypoint: ./script.sh
+          # some is considered the first argument. so in the script file, if you have echo "$1" its only going to echo 'some'
+          args: "Some string"
+          # need to create a slack app and then add generate a webhook and add that you
+      - name: send a slack message
+        uses: docker://technosophos/slack-notify
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_TITLE: from github actions
+          SLACK_MESSAGE: "Actor: ${{ github.actor }}, Event: ${{ github.event_name }}"
+          SlACK_COLOR: "#723fc4"
