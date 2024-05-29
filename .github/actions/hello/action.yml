@@ -1,0 +1,20 @@
+name: hello world
+author: phil
+description: "greet someone and record the time"
+inputs:
+  who_to_greet:
+    description: "who to greet"
+    required: true
+    default: "world"
+outputs:
+  time:
+    description: the time of the greeting
+# this is saying that we are gonna use node as our runner
+runs:
+  using: "node16"
+  main: index.js
+  pre: "setup.js"
+  # pref if is a condition to run the pre key. curious as to why it comes after
+  pre-if: runner.os == 'linux'
+  post: "cleanup.js"
+  post-if: runner.os == 'linux'
