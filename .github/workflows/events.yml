@@ -1,0 +1,18 @@
+name: Repository Events
+on:
+  # instead of having an array here, you can think of push/pull_requst as an object and then has certain properties, ie: types. which is all on githubs website
+
+  push:
+  pull_request:
+    types: [opened, assigned, reopened, synchronize]
+  issues:
+    types: [opened]
+
+jobs:
+  checkout-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $GITHUB_SHA
+          echo $GITHUB_REF
+      - uses: actions/checkout@v3
