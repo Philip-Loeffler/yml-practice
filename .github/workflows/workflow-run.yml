@@ -1,0 +1,13 @@
+# run based on another workflow
+# so when repository events is completed, then this workflow will run.
+# you can only have three levels of nesting
+name: workflow run
+on:
+  workflow_run:
+    workflows: [Repository Events]
+    types: [completed]
+jobs:
+  echo-string:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "i was triggered because "Repository Events" was completed."ß

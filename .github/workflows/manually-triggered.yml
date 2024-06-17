@@ -1,0 +1,22 @@
+# workflow dispach will allow you to add certain values directly into your workflow while in github
+# a drop down is created for the inputs that you define
+# gh workflow run manually-triggered.yml -f string="from gh cli"
+# above is a way to send this information through github cli
+
+name: Manually triggered
+on:
+  workflow_dispatch:
+    inputs:
+      string:
+        description: a string input
+        type: string
+        required: true
+        default: "Default value"
+
+jobs:
+  log-info:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo $GITHUB_REF
+      - run: |
+          echo "String: ${{ inputs.string }}"
