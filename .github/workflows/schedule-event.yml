@@ -1,0 +1,21 @@
+# the schedule event allows you to trigger a forwflow at a scheduled time
+#
+#
+
+name: Stale issues and pull request
+on:
+  # cron key is in schedule
+  # contrabguru.com will decode the cron expression, check it out!
+  # minute, hour, day(month), month, day(week) = * * * * *
+  schedule:
+    - cron: "* * * * *"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v8
+        with:
+          stale-issue-message: "this is some message"
+          days-before-state: 1
+          days-before-close: 5

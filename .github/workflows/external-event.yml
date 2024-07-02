@@ -1,0 +1,19 @@
+name: External Events
+on:
+  # for this to work, this has to be pushed to your default branch
+
+  repository_dispatch:
+    # workflow will only run if we send build as event type through postman
+    types: [build]
+
+jobs:
+  echo-a-string:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Repo dispatch"
+      # if we send our env in the client payload from the api in postman, we will see the env
+      - run: echo ${{ github.event.client_payload.env }}
+# for this to work, you need to generate two 'fine-grained tokens' which are in
+# settings/developer settings/personal access tokens
+# need to this because there is an api that is being used for repository dispatch event
+# you can this go to postman to send an event from github api, which will trigger this
